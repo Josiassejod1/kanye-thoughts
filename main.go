@@ -4,6 +4,9 @@ import (
 	"fmt"
 )
 
+const message = "Hello World"
+
 func main() {
+
 	fmt.Println("Hello world")
 }
