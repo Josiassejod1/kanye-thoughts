@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "eslint-config-react-app": "^5.1.0",
+    "react-copy-to-clipboard": "^5.0.2"
+  }
+}
