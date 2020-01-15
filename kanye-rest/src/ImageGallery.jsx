@@ -1,6 +1,6 @@
 import React from 'react';
 import imageCompression from 'browser-image-compression';
-
+import html2canvas from 'html2canvas';
 
 class ImageGallery extends React.Component {
   constructor(props) {
@@ -14,6 +14,31 @@ class ImageGallery extends React.Component {
     this.setState({
       display: e.target.name
     })
+  }
+
+  handleDownload(){
+    html2canvas(document.querySelector("#capture"), {
+       useCORS: true,
+       width: 750,
+       height: 750,
+       backgroundColor: null,
+       scrollX: 0,
+       scrollY: -window.scrollY,
+       scale: 1
+     })
+       .then(canvas => {
+         const imgData = canvas.toDataURL('image/png');
+         console.log(canvas);
+         console.log(imgData); //Maybe blank, maybe full image, maybe half of image
+         //console.log(canvas.url);
+         var link = document.createElement('a');
+         link.href = imgData;
+         link.id = 'capture';
+         link.download = 'download.png';
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+       });
   }
   render(){
     const image_array = [
@@ -31,11 +56,13 @@ class ImageGallery extends React.Component {
     var selectedImage = this.state.display;
     return(
     <React.Fragment>
-    <div style={{
+    <div id="capture"
+
+      style={{
       position: 'relative',
-      textAlign: 'center'
+      textAlign: 'center',
     }}>
-      <img src={src + selectedImage} />
+      <img width="500" height="500" src={src + selectedImage} />
       <h1 style={{
         position: 'absolute',
         top: '50%',
@@ -44,10 +71,11 @@ class ImageGallery extends React.Component {
         overflow: 'hidden'
       }}>{quote}</h1>
     </div>
-    <div style={{padding: '20px'}}>
+    <input name="Download" type="image" src="kanye/download.png" onClick={(e) => this.handleDownload()} />
+    <div data-html2canvas-ignore style={{padding: '20px'}}>
       {
         image_array.map((image, i) => (
-          <img width="150" name={image} onClick={(e) => this.handleSelect(e)}height="150" key={i} src={src + image} />
+          <img width="150" height="150" name={image} onClick={(e) => this.handleSelect(e)} key={i} src={src + image} />
         ))
       }
     </div>
