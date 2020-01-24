@@ -1,7 +1,11 @@
 {
   "dependencies": {
+    "draft-js": "^0.11.4",
+    "draft-js-buttons": "^2.0.2",
     "eslint-config-react-app": "^5.1.0",
     "html2canvas": "^1.0.0-rc.5",
-    "react-copy-to-clipboard": "^5.0.2"
+    "react": "^16.12.0",
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-dom": "^16.12.0"
   }
 }
