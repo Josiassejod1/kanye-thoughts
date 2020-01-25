@@ -82,8 +82,8 @@ class ImageGallery extends React.Component {
       textAlign: 'center',
     }}>
       <img width="500" height="500" src={src + selectedImage} />
-      <textarea defaultValue={quote} placeHolder="Text Here" style={{
-        fontSize: 100,
+      <textarea defaultValue={quote} rows="10" cols="20" placeHolder="Text Here" style={{
+        fontSize: 40,
         resize: 'none',
         margin: '0 auto',
         backgroundColor: 'transparent',
@@ -97,13 +97,6 @@ class ImageGallery extends React.Component {
     </div>
 
     <input name="Download" type="image" src="kanye/download.png" onClick={(e) => this.handleDownload()} />
-    <div style={styles.editor}>
-    <Editor
-      ref={this.setEditor}
-      editorState={this.state.editorState}
-      onChange={this.onChange}
-      />
-    </div>
     <div data-html2canvas-ignore style={{padding: '20px'}}>
       {
         image_array.map((image, i) => (
