@@ -1,19 +1,70 @@
 import React from 'react';
 import imageCompression from 'browser-image-compression';
 import html2canvas from 'html2canvas';
-import {Editor, EditorState} from 'draft-js';
-import Toolbar from 'draft-js-buttons';
+
+
 class ImageGallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       display: 'album-1.png',
-      editorState: EditorState.createEmpty()
+      textColor: 'black',
+      fontWeight: 'initial',
+      toggleItalic: 'normal',
+      fontFamily: 'Times',
+      toggleBold: 'initial'
     };
-    this.setEditor = (editor) => {
-      this.editor = editor;
+  }
+
+
+
+  cyclefontFamily(){
+    const fontFamily = [
+      "Impact",
+      "Arial",
+      "Courier New",
+      "Veranda",
+      "sans-serif"
+    ]
+    var currentFont = this.state.fontFamily;
+    var max = fontFamily.length - 1;
+    var index = fontFamily.indexOf(currentFont);
+    var nextFont = "none"
+    if (max == index) {
+      nextFont = fontFamily[0]
+    } else {
+      nextFont = fontFamily[index + 1]
     }
-    this.onChange = (editorState) => this.setState({editorState});
+    console.log(nextFont);
+    this.setState({
+      fontFamily: nextFont
+    })
+  }
+
+  toggleBold(){
+    var state = ""
+    if (this.state.toggleBold == 'initial'){
+      state = 'bold'
+    } else {
+      state = "initial"
+    }
+    this.setState({
+      toggleBold: state
+    })
+  }
+
+  toggleItalic(){
+    var state = ""
+    var key = this.state.toggleItalic
+
+    if (key == 'normal'){
+      state = 'italic'
+    } else {
+      state =  "normal"
+    }
+    this.setState({
+      toggleItalic: state
+    })
   }
 
   handleSelect(e){
@@ -73,7 +124,19 @@ class ImageGallery extends React.Component {
     };
     var quote = this.props.quote;
     var selectedImage = this.state.display;
-    var text = this.state.editorState.getCurrentContent().getPlainText();
+    var textColor = this.state.textColor;
+    var fontFamily = this.state.fontFamily;
+    var toggleBold = this.state.toggleBold;
+    var toggleItalic = this.state.toggleItalic;
+    var colorPicker = [
+      "red",
+      "black",
+      "green",
+      "white",
+      "orange",
+      "purple"
+    ]
+
     return(
     <React.Fragment>
     <div id="capture"
@@ -82,9 +145,13 @@ class ImageGallery extends React.Component {
       textAlign: 'center',
     }}>
       <img width="500" height="500" src={src + selectedImage} />
-      <textarea defaultValue={quote} placeHolder="Text Here" style={{
-        fontSize: 100,
+      <textarea defaultValue={quote} rows="5" cols="20" placeholder="Text Here" style={{
+        fontSize: 40,
+        fontFamily: fontFamily,
         resize: 'none',
+        fontWeight: toggleBold,
+        color: textColor,
+        fontStyle: toggleItalic,
         margin: '0 auto',
         backgroundColor: 'transparent',
         borderColor: 'transparent',
@@ -94,16 +161,89 @@ class ImageGallery extends React.Component {
         transform: 'translate(-50%, -50%)',
         overflow: 'hidden'
       }}></textarea>
+    <React.Fragment>
+
+        <div>
+        <div
+        style={{
+          width: "50px",
+          height: "50px",
+          margin: "25px",
+          padding: "15px",
+          borderRadius: "25%",
+          border: "1px solid black",
+          backgroundColor: "#d4d0d0",
+          display: "inline-block"
+        }}>
+          <p onClick={(e) => (this.cyclefontFamily())}style={{fontSize: "40px", margin: "0 auto"}}>T</p>
+        </div>
+
+        <div
+        style={{
+          width: "50px",
+          height: "50px",
+          margin: "25px",
+          padding: "15px",
+          borderRadius: "25%",
+          border: "1px solid black",
+          backgroundColor: "#d4d0d0",
+          display: "inline-block"
+        }}>
+          <strong><p onClick={(e) => (this.toggleBold())} style={{fontSize: "40px", margin: "0 auto"}}>B</p></strong>
+        </div>
+
+        <div
+        style={{
+          width: "50px",
+          height: "50px",
+          margin: "25px",
+          padding: "15px",
+          borderRadius: "25%",
+          border: "1px solid black",
+          backgroundColor: "#d4d0d0",
+          display: "inline-block"
+        }}>
+          <em><p onClick={(e) => {this.toggleItalic()}}style={{fontSize: "40px", margin: "0 auto"}}>I</p></em>
+        </div>
+        </div>
+
+          <div style={{
+            padding: 15,
+            margin: "0 auto",
+          }}>
+          {
+            colorPicker.map((color, i) => (
+              <div
+              key={i}
+              onClick={(e) => (
+console.log(e),
+console.log(color),
+                this.setState({
+
+                textColor: color
+              }))}
+              style={{
+                width: "50px",
+                height: "50px",
+                margin: "10px",
+                padding: "25px",
+                borderRadius: "25%",
+                border: "1px solid black",
+                backgroundColor: colorPicker[i],
+                display: "inline-block"
+              }}>
+              </div>
+              ))
+            }
+          </div>
+
+
+
+    </React.Fragment>
+
     </div>
 
     <input name="Download" type="image" src="kanye/download.png" onClick={(e) => this.handleDownload()} />
-    <div style={styles.editor}>
-    <Editor
-      ref={this.setEditor}
-      editorState={this.state.editorState}
-      onChange={this.onChange}
-      />
-    </div>
     <div data-html2canvas-ignore style={{padding: '20px'}}>
       {
         image_array.map((image, i) => (
